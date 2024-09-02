@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-56 bg-gray-100 dark:bg-gray-800">
+            <ul class="p-4">
+                <li class="py-2">Home</li>
+                <li class="py-2">About</li>
+                <li class="py-2">Services</li>
+                <li class="py-2">Contact</li>
+            </ul>
+        </div>
+        <!-- File Explorer -->
+        <div class="flex-1 p-8 bg-gray-200 dark:bg-gray-600">
+            <div class="grid grid-cols-5 gap-4">
+				{% for folder in folders_list %}
+                <div class="text-center">
+                    <i class="fas fa-folder fa-3x"></i>
+                    <p>{{ folder }}</p>
+                </div>
+				{% endfor %}
+				{% for file in files %}
+				<button class="bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-700 transition" onclick="openModal('model-{{ file.adress }}')">
+				   <div class="text-center">
+						<i class="fas fa-file fa-3x"></i>
+						<p>{{ file.name }}</p>
+					</div>
+				</button>
+				<div id="model-{{ file.adress }}" class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4 ">
+					<div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
+
+						<div class="p-6 pt-0 text-center">
+							<h3 class="text-xl font-normal text-gray-500 mt-5 mb-6">public link: <a class='text-blue-700' href='{{ file.permanent_link }}'> Download </a></h3>
+							<h3 class="text-xl font-normal text-gray-500 mt-5 mb-6">private link: <a class='text-blue-700' href='{{ file.temporary_link }}'> Download </a></h3>
+							<a href="#"  onclick="closeModal('model-{{ file.adress }}')"
+								class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
+								OK
+							</a>
+						</div>
+
+					</div>
+				</div>
+				{% endfor %}
+
+
+
+				<script type="text/javascript">
+					window.openModal = function(modalId) {
+						document.getElementById(modalId).style.display = 'block'
+						document.getElementsByTagName('body')[0].classList.add('overflow-y-hidden')
+					}
+
+					window.closeModal = function(modalId) {
+						document.getElementById(modalId).style.display = 'none'
+						document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden')
+					}
+
+					// Close all modals when press ESC
+					document.onkeydown = function(event) {
+						event = event || window.event;
+						if (event.keyCode === 27) {
+							document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden')
+							let modals = document.getElementsByClassName('modal');
+							Array.prototype.slice.call(modals).forEach(i => {
+								i.style.display = 'none'
+							})
+						}
+					};
+				</script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
