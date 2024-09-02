@@ -18,12 +18,22 @@
             </ul>
         </div>
         <!-- File Explorer -->
-        <div class="flex-1 p-8 bg-gray-200 dark:bg-gray-600">
+        <div class="flex-1 p-8 bg-gray-200 p-8 dark:bg-gray-600">
+			{% if parent %}
+			<a class="flex items-center space-x-2 py-2 bg-blue-500 text-white font-bold py-2 px-4 rounded" href="{% url 'folder' parent %}">
+				<svg class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+					<path d="M2 14l4-4v3h16v-2h-16v3l-4-4z"/>
+				</svg>
+				<span>parent folder</span>
+			</a><br>
+			{% endif %}
             <div class="grid grid-cols-5 gap-4">
 				{% for folder in folders_list %}
                 <div class="text-center">
-                    <i class="fas fa-folder fa-3x"></i>
-                    <p>{{ folder }}</p>
+					<a href="{% url 'folder' folder.adress %}">
+						<i class="fas fa-folder fa-3x"></i>
+						<p>{{ folder.name }}</p>
+					</a>
                 </div>
 				{% endfor %}
 				{% for file in files %}

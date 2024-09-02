@@ -13,17 +13,22 @@ AWS = {
 
 
 def home(request,dir='/'):
-    print('s')
     s3 = boto3.client('s3',
         endpoint_url=AWS['endpoint'],
         aws_access_key_id=AWS['accesskey'],
         aws_secret_access_key=AWS['secretkey']
     )
     bucket_name = AWS['bucket']
-    objects = s3.list_objects(Bucket=bucket_name,Prefix=dir)
-    folder_objects = s3.list_objects_v2(Bucket=bucket_name, Prefix=dir, Delimiter='/')
-
-    folders_list = [prefix.get('Prefix') for prefix in folder_objects.get('CommonPrefixes', [])]
+    objects = s3.list_objects(Bucket=bucket_name,Prefix=dir, Delimiter='/')
+    response = s3.list_objects_v2(Bucket=bucket_name, Prefix=dir, Delimiter='/')
+    print(request.GET.get('dir', ''))
+    folders_list = []
+    print(dir)
+    
+    if 'CommonPrefixes' in response:
+        # Loop through the prefixes and print their names (folder names)
+        for folder in response['CommonPrefixes']:
+            folders_list.append({'name':folder['Prefix'].split('/')[-2],'adress':folder['Prefix']})
 
     files = []
     if 'Contents' in objects:
@@ -40,4 +45,9 @@ def home(request,dir='/'):
             })
     else:
         files.append({'name': 'no file', 'permanent_link': '', 'temporary_link': ''})
-    return render(request,'home.html',{'files': files,'folders_list':folders_list,'objects:':objects})
+    if dir != '/':
+        print(os.path.dirname(dir.rstrip('/')))
+        parent = os.path.dirname(dir.rstrip('/'))
+    else:
+        parent = None
+    return render(request,'home.html',{'files': files,'folders_list':folders_list,'objects':objects, 'parent':parent})

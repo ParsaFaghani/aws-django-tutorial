@@ -1,6 +1,6 @@
-from django.urls import path
+from django.urls import path, re_path
 from .views import home
 
 urlpatterns = [
-    path('explore/<str:dir>',home),
+    re_path(r'^folder/(?P<dir>.*)$', home, name='folder'),
 ]
