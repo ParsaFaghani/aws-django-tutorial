@@ -11,8 +11,7 @@
         <!-- Sidebar -->
         <div class="w-56 bg-gray-100 dark:bg-gray-800">
             <ul class="p-4">
-                <li class="py-2">Home</li>
-            <!-- <li class="py-2">upload</li> -->
+                <a href="{% url 'folder' '' %}" ><li class="py-2">File Explore</li></a>
             <!-- <li class="py-2">Services</li> -->
             <!-- <li class="py-2">Contact</li> -->
             </ul>
@@ -20,12 +19,16 @@
         <!-- File Explorer -->
         <div class="flex-1 p-8 bg-gray-200 p-8 dark:bg-gray-600">
 			{% if parent %}
-			<a class="flex items-center space-x-2 py-2 bg-blue-500 text-white font-bold py-2 px-4 rounded" href="{% url 'folder' parent %}">
-				<svg class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-					<path d="M2 14l4-4v3h16v-2h-16v3l-4-4z"/>
-				</svg>
-				<span>parent folder</span>
-			</a><br>
+			<div class="flex items-center space-x-4 ">
+				<a class="flex items-center py-2 text-white font-bold py-2 rounded-md transition " href="{% url 'folder' parent %}">
+					<svg class="h-10 w-10 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+						<path d="M2 14l4-4v3h16v-2h-16v3l-4-4z"/>
+					</svg>
+				</a>
+				
+				<!-- <button onclick="createFolder()" class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-700 transition">Create Folder</button> -->
+				
+			</div>
 			{% endif %}
             <div class="grid grid-cols-5 gap-4">
 				{% for folder in folders_list %}

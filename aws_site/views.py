@@ -21,9 +21,7 @@ def home(request,dir='/'):
     bucket_name = AWS['bucket']
     objects = s3.list_objects(Bucket=bucket_name,Prefix=dir, Delimiter='/')
     response = s3.list_objects_v2(Bucket=bucket_name, Prefix=dir, Delimiter='/')
-    print(request.GET.get('dir', ''))
     folders_list = []
-    print(dir)
     
     if 'CommonPrefixes' in response:
         # Loop through the prefixes and print their names (folder names)
@@ -46,8 +44,7 @@ def home(request,dir='/'):
     else:
         files.append({'name': 'no file', 'permanent_link': '', 'temporary_link': ''})
     if dir != '/':
-        print(os.path.dirname(dir.rstrip('/')))
-        parent = os.path.dirname(dir.rstrip('/'))
+        parent = os.path.dirname(dir.rstrip('/')) + '/'
     else:
         parent = None
-    return render(request,'home.html',{'files': files,'folders_list':folders_list,'objects':objects, 'parent':parent})
+    return render(request,'home.html',{'files': files,'folders_list':folders_list,'objects':objects, 'parent':parent,'dir':dir})
