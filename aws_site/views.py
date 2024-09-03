@@ -43,8 +43,8 @@ def home(request,dir='/'):
             })
     else:
         files.append({'name': 'no file', 'permanent_link': '', 'temporary_link': ''})
-    if dir != '/':
-        parent = os.path.dirname(dir.rstrip('/')) + '/'
+    if dir != '/' and dir != '':
+        parent = os.path.dirname(dir.rstrip('/')) 
     else:
         parent = None
     return render(request,'home.html',{'files': files,'folders_list':folders_list,'objects':objects, 'parent':parent,'dir':dir})

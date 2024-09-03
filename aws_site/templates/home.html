@@ -18,7 +18,7 @@
         </div>
         <!-- File Explorer -->
         <div class="flex-1 p-8 bg-gray-200 p-8 dark:bg-gray-600">
-			{% if parent %}
+			{% if parent != None %}
 			<div class="flex items-center space-x-4 ">
 				<a class="flex items-center py-2 text-white font-bold py-2 rounded-md transition " href="{% url 'folder' parent %}">
 					<svg class="h-10 w-10 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
